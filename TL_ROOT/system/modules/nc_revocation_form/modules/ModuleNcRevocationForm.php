@@ -25,7 +25,7 @@ namespace NC;
  * @author    Marcel Mathias Nolte
  * @copyright Marcel Mathias Nolte 2013
  */
-class ModuleNcRevocationForm extends Module
+class ModuleNcRevocationForm extends \Module
 {
 
 	/**
@@ -43,7 +43,7 @@ class ModuleNcRevocationForm extends Module
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### MEMBER REGISTRATION FORM ###';
 			return $objTemplate->parse();
 		}
