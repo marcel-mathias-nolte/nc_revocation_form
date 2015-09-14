@@ -49,12 +49,19 @@ $GLOBALS['TL_DCA']['tl_nc_revocation_form'] = array
         ),
         'label' => array
         (
-            'fields'                  => array('lastname', 'firstname', 'email', 'date', 'id'),
-            'format'                  => '%s, %s &lt;%s&gt; am %s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>'
+			'fields'                  => array('id'),
+            'label_callback'          => array('tl_nc_revocation_form', 'getLabel')
         ),
         'global_operations'           => array(),
         'operations' => array
         (
+			'markMessageRead' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_nc_revocation_form']['markMessageRead'],
+				'icon'                => 'system/modules/nc_revocation_form/assets/unread.png',
+				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleNcRevocationFormRead(this,%s)"',
+				'button_callback'     => array('tl_nc_revocation_form', 'getReadIcon')
+			),
             'delete' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_revocation_form']['delete'],
@@ -131,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_nc_revocation_form'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => array('male', 'female'),
-			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
+			'reference'               => &$GLOBALS['TL_LANG']['tl_nc_revocation_form']['gender'],
 			'eval'                    => array('includeBlankOption'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
 			'sql'                     => "varchar(32) NOT NULL default ''"
 		),
@@ -199,7 +206,7 @@ $GLOBALS['TL_DCA']['tl_nc_revocation_form'] = array
 			'search'                  => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>17, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>17, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(32) NOT NULL default ''"
 		),
 		'ip' => array
@@ -209,9 +216,17 @@ $GLOBALS['TL_DCA']['tl_nc_revocation_form'] = array
 			'search'                  => true,
 			'flag'                    => 1,
 			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>15, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>15, 'tl_class'=>'w50'),
 			'sql'                     => "varchar(32) NOT NULL default ''"
 		),
+		'messageRead' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_nc_revocation_form']['messageRead'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'eval'                    => array('tl_class'=>'clr'),
+			'sql'                     => "char(1) NOT NULL default ''"
+		)
 	)
 );
 
@@ -235,5 +250,47 @@ class tl_nc_revocation_form extends Backend
 		parent::__construct();
 		$this->import('BackendUser', 'User');
 	}
+	
 
+	/**
+	 * Return the item label
+	 * @return array
+	 */
+	public function getLabel($arrRow)
+	{
+		$token = array(
+			'###fmt###' => !$arrRow['messageRead'] ? 'strong' : 'i'
+		);
+		foreach ($arrRow as $key => $value) {
+			$token['###' . $key . '###'] = $value;
+		}
+		return strtr($GLOBALS['TL_LANG']['tl_nc_revocation_form']['label'], $token);
+	}
+
+
+	/**
+	 * Return the "toggle read" button
+	 *
+	 * @param array  $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 *
+	 * @return string
+	 */
+	public function getReadIcon($row, $href, $label, $title, $icon, $attributes)
+	{
+		if (!$this->User->hasAccess('tl_nc_revocation_form::messageRead', 'alexf'))
+		{
+			return '';
+		}
+		$href .= '&amp;item='.$row['id'].'&amp;read_state='.$row['messageRead'];
+		if ($row['messageRead'])
+		{
+			$icon = 'system/modules/nc_revocation_form/assets/read.png';
+		}
+		return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
+	}
 }

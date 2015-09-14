@@ -7,7 +7,7 @@
  * 
  * @package   NC Revocation Form
  * @author    Marcel Mathias Nolte
- * @copyright Marcel Mathias Nolte 2013
+ * @copyright Marcel Mathias Nolte 2015
  * @website	  https://www.noltecomputer.com
  * @license   <marcel.nolte@noltecomputer.de> wrote this file. As long as you retain this notice you
  *            can do whatever you want with this stuff. If we meet some day, and you think this stuff 
@@ -16,15 +16,4 @@
  */
 
 
-/**
- * Back end modules
- */
-$GLOBALS['TL_LANG']['MOD']['messages']         = array('Messages', 'Notifications from various sources.');
-$GLOBALS['TL_LANG']['MOD']['ncRevocationForm'] = array('Revocation form (' . ModuleNcRevocationFormHelper::getInstance()->getUnreadCount() . ')', 'Show submitted revocations.');
-
-
-/**
- * Front end modules
- */
-$GLOBALS['TL_LANG']['FMD']['forms']            = 'Forms';
-$GLOBALS['TL_LANG']['FMD']['ncRevocationForm'] = array('Revocation form', 'Show a revocation form.');
+$GLOBALS['TL_LANG']['MSC']['NOTIFICATION']['ncRevocationForm'] = 'New revocation from ###lastname###, ###firstname### &lt;###email###&gt; at ###date### via IP ###ip###';

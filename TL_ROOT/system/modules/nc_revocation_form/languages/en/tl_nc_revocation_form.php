@@ -19,35 +19,46 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['goods']           = array('Goods', 'Please enter the goods which you want to return.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['orderDate']       = array('Order date', 'Please enter the date of the order.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['shippingDate']    = array('Shipping date', 'Please enter the shipping date.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['email']           = array('E-mail address', 'Please enter a valid e-mail address.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['firstname']       = array('First name', 'Please enter the first name.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['lastname']        = array('Last name', 'Please enter the last name.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['street']          = array('Street', 'Please enter the street name and number.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['postal']          = array('Postal code', 'Please enter the postal code.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['city']            = array('City', 'Plase enter the name of the city.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['phone']           = array('Phone number', 'Please enter the phone number.');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['date']            = array('Date', '');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['ip']              = array('IP address', '');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['goods']            = array('Goods', 'Please enter the goods which you want to return.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['orderDate']        = array('Order date', 'Please enter the date of the order.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['shippingDate']     = array('Shipping date', 'Please enter the shipping date.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['email']            = array('E-mail address', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['gender']           = array('Salutation', 'Please select the salutation.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['gender']['male']   = 'Mr.';
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['gender']['female'] = 'Mrs.';
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['firstname']        = array('First name', 'Please enter the first name.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['lastname']         = array('Last name', 'Please enter the last name.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['street']           = array('Street', 'Please enter the street name and number.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['postal']           = array('Postal code', 'Please enter the postal code.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['city']             = array('City', 'Plase enter the name of the city.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['phone']            = array('Phone number', 'Please enter the phone number.');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['date']             = array('Date', '');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['ip']               = array('IP address', '');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['messageRead']      = array('Message read', 'Wheter the message was read.');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['personal_legend'] = 'Personal data';
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['data_legend']     = 'Meta data';
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['personal_legend']  = 'Personal data';
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['data_legend']      = 'Meta data';
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['show']            = array('Show application', 'Show details of application ID %s');
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['delete']          = array('Delete application', 'Delete application ID %s');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['markMessageRead']  = array('Mark revocation (un-)read', 'Mark revocation ID %s (un-)read');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['show']             = array('Show application', 'Show details of application ID %s');
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['delete']           = array('Delete application', 'Delete application ID %s');
 
 
 /**
  * Frontend
  */
-$GLOBALS['TL_LANG']['tl_nc_revocation_form']['submit']          = 'Submit revocation now';
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['submit']           = 'Submit revocation now';
+
+
+/**
+ * Label
+ */
+$GLOBALS['TL_LANG']['tl_nc_revocation_form']['label']            = '<###fmt###>###lastname###, ###firstname### &lt;###email###&gt; on ###date### <span style="color:#b3b3b3; padding-left:3px;">[###id###]</span></###fmt###>';

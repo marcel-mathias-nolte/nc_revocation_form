@@ -20,7 +20,7 @@
  * Back end modules
  */
 $GLOBALS['TL_LANG']['MOD']['messages']         = array('Benachrichtigungen', 'Benachrichtigungen aus verschiedenen Quellen.');
-$GLOBALS['TL_LANG']['MOD']['ncRevocationForm'] = array('Widerrufsformular', 'Übermittelte Widerrüfe anzeigen.');
+$GLOBALS['TL_LANG']['MOD']['ncRevocationForm'] = array('Widerrufsformular (' . ModuleNcRevocationFormHelper::getInstance()->getUnreadCount() . ')', 'Übermittelte Widerrüfe anzeigen.');
 
 
 /**
