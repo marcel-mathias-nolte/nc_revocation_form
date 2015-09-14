@@ -23,9 +23,9 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'nc_revocation_f
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'nc_revocation_form_mail_user';
  
-$GLOBALS['TL_DCA']['tl_module']['palettes']['ncRevocationForm'] = '{title_legend},name,headline,type;{config_legend},disableCaptcha,nc_revocation_form_template,nc_revocation_form_mail_admin,nc_revocation_form_mail_user;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['ncRevocationForm'] = '{title_legend},name,headline,type;{config_legend},disableCaptcha,nc_revocation_form_template,nc_revocation_form_use_feuser,nc_revocation_form_mail_admin,nc_revocation_form_mail_user;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['nc_revocation_form_mail_admin'] = 'nc_revocation_form_mail_admin_address,nc_revocation_form_mail_admin_subject,nc_revocation_form_mail_admin_text';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['nc_revocation_form_mail_admin'] = 'nc_revocation_form_mail_admin_original_sender,nc_revocation_form_mail_admin_address,nc_revocation_form_mail_admin_subject,nc_revocation_form_mail_admin_text';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['nc_revocation_form_mail_user'] = 'nc_revocation_form_mail_user_subject,nc_revocation_form_mail_user_text';
 
@@ -40,12 +40,29 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_template'] = array
 	'sql'                     => "varchar(32) NOT NULL default ''"
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_use_feuser'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_use_feuser'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class'=>'clr'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_admin'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_admin'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('submitOnChange'=>true),
+	'eval'                    => array('tl_class'=>'clr', 'submitOnChange'=>true),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_admin_original_sender'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_admin_original_sender'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -55,7 +72,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_admin_address
 	'exclude'                 => true,
 	'flag'                    => 1,
 	'inputType'               => 'text',
-	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long', 'decodeEntities'=>true),
 	'load_callback' => array
 	(
 		array('tl_module_nc_revocation_form', 'getDefaultAdminAddress')
@@ -69,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_admin_subject
 	'exclude'                 => true,
 	'flag'                    => 1,
 	'inputType'               => 'text',
-	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long', 'decodeEntities'=>true),
 	'load_callback' => array
 	(
 		array('tl_module_nc_revocation_form', 'getDefaultAdminSubject')
@@ -92,10 +109,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_admin_text'] 
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_user'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_admin'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_user'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
 	'eval'                    => array('submitOnChange'=>true),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_user_original_sender'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_user_original_sender'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -105,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_user_subject'
 	'exclude'                 => true,
 	'flag'                    => 1,
 	'inputType'               => 'text',
-	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long', 'decodeEntities'=>true),
 	'load_callback' => array
 	(
 		array('tl_module_nc_revocation_form', 'getDefaultUserSubject')
@@ -115,7 +140,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_user_subject'
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_revocation_form_mail_user_text'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_admin_text'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['nc_revocation_form_mail_user_text'],
 	'exclude'                 => true,
 	'inputType'               => 'textarea',
 	'eval'                    => array('style'=>'height:120px', 'decodeEntities'=>true, 'alwaysSave'=>true),

@@ -7,7 +7,7 @@
  * 
  * @package   NC Revocation Form
  * @author    Marcel Mathias Nolte
- * @copyright Marcel Mathias Nolte 2013
+ * @copyright Marcel Mathias Nolte 2015
  * @website	  https://www.noltecomputer.com
  * @license   <marcel.nolte@noltecomputer.de> wrote this file. As long as you retain this notice you
  *            can do whatever you want with this stuff. If we meet some day, and you think this stuff 
@@ -125,7 +125,12 @@ class ModuleNcRevocationForm extends \Module
 		$hasUpload = false;
 		$fields = $this->fields;
 		$i = 0;
-				
+		
+		if (FE_USER_LOGGED_IN && $this->nc_revocation_form_use_feuser)
+		{
+		   $this->import('FrontendUser', 'User');
+		}
+			
 		// Build form
 		foreach ($fields as $field)
 		{
@@ -227,6 +232,12 @@ class ModuleNcRevocationForm extends \Module
 				{
 					$arrMessage[$field] = $varValue;
 				}
+			} 
+			else if (!($objWidget instanceof uploadable) && FE_USER_LOGGED_IN && $this->nc_revocation_form_use_feuser)
+			{
+				if (!empty($this->User->$field)) {
+					$objWidget->value = $this->User->$field;
+				}
 			}
 			if ($objWidget instanceof uploadable)
 			{
@@ -278,17 +289,16 @@ class ModuleNcRevocationForm extends \Module
 	protected function saveMessage($arrData)
 	{
 		$arrData['tstamp'] = time();
-		$arrData['date'] = date("d.m.Y H:i");
+		$arrData['date'] = date($GLOBALS['TL_CONFIG']['datimFormat']);
 		$arrData['ip'] = $_SERVER['REMOTE_ADDR'];
 		unset($arrData['captcha']);
 		unset($arrData['label']);
-
 		$arrChunks = array();
-		// Create message
 		$objNewMessage = $this->Database->prepare("INSERT INTO tl_nc_revocation_form %s")->set($arrData)->execute();
 		$insertId = $objNewMessage->insertId;
-
-		// Inform admin 
+		if ($this->Database->tableExists('tl_nc_notifications')) {
+			$this->Database->prepare("INSERT INTO tl_nc_notifications (tstamp, sid, source, href) VALUES (?, ?, ?, ?)")->execute($arrData['tstamp'], $insertId, 'tl_nc_revocation_form', 'main.php?do=ncRevocationForm&act=show&id=' . $insertId);
+		}
 		$this->sendAdminNotification($insertId, $arrData);
 		$this->jumpToOrReload($this->jumpTo);
 	}
@@ -306,12 +316,18 @@ class ModuleNcRevocationForm extends \Module
 		foreach ($arrData as $key => $value) {
 			$token['###' . $key . '###'] = $value;
 		}
+		$token['###gender###'] = $token['###gender###'] ? $GLOBALS['TL_LANG']['tl_nc_revocation_form']['gender'][$token['###gender###']] : '';
 		
 		$objEmail = new \Email();
-		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-		$objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
 		
 		if ($this->nc_revocation_form_mail_admin) {
+			if ($this->nc_revocation_form_mail_admin_original_sender) {
+				$objEmail->from = $arrData['email'];
+				$objEmail->fromName = $arrData['name'];
+			} else {
+				$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
+				$objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
+			}
 			$objEmail->subject = strtr($this->nc_revocation_form_mail_admin_subject, $token);
 			$objEmail->text = strtr($this->nc_revocation_form_mail_admin_text, $token);
 			$blnSend = false;
@@ -328,6 +344,13 @@ class ModuleNcRevocationForm extends \Module
 		}
 		
 		if ($this->nc_revocation_form_mail_user) {
+			if ($this->nc_revocation_form_mail_user_original_sender) {
+				$objEmail->from = $arrData['email'];
+				$objEmail->fromName = $arrData['name'];
+			} else {
+				$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
+				$objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
+			}
 			$objEmail->subject = strtr($this->nc_revocation_form_mail_user_subject, $token);
 			$objEmail->text = strtr($this->nc_revocation_form_mail_user_text, $token);
 			$blnSend = false;

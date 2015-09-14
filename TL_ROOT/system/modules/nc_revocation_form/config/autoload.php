@@ -30,6 +30,8 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
+	// Classes
+	'NC\\ModuleNcRevocationFormHelper'        => 'system/modules/nc_revocation_form/classes/ModuleNcRevocationFormHelper.php',
 	// Modules
 	'NC\\ModuleNcRevocationForm'              => 'system/modules/nc_revocation_form/modules/ModuleNcRevocationForm.php',
 ));
