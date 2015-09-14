@@ -21,7 +21,7 @@ namespace NC;
 /**
  * Helper class for hook callbacks.
  *
- * @package   NC Contact Form
+ * @package   NC Revocation Form
  * @author    Marcel Mathias Nolte
  * @copyright Marcel Mathias Nolte 2015
  */

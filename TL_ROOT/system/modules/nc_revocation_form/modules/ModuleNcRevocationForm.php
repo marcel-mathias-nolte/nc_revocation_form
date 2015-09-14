@@ -23,7 +23,7 @@ namespace NC;
  *
  * @package   NC Revocation Form
  * @author    Marcel Mathias Nolte
- * @copyright Marcel Mathias Nolte 2013
+ * @copyright Marcel Mathias Nolte 2015
  */
 class ModuleNcRevocationForm extends \Module
 {
